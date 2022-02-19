@@ -34,10 +34,17 @@ def marginal(joint, axis):
     """
     return Pmf(joint.sum(axis=axis))
 
-def make_uniform(basis):
-    """ Make and return a uniform distribution on basis """
-    pmf = Pmf(1, basis)
+def make_uniform(qs, name=None, **options):
+    """Make a Pmf that represents a uniform distribution.
+    qs: quantities
+    name: string name for the quantities
+    options: passed to Pmf
+    returns: Pmf
+    """
+    pmf = Pmf(1.0, qs, **options)
     pmf.normalize()
+    if name:
+        pmf.index.name = name
     return pmf
     
 def make_joint(s1, s2):
