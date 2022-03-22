@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from empiricaldist import Pmf
 
-# distributions
-from scipy.stats import binom
+# distributions, &c.
+from scipy.stats import binom, gaussian_kde
 
 def normalize(joint):
     """ Normalize a joint distribution """
@@ -89,5 +89,19 @@ def pmf_from_dist(dist, qs):
     """
     ps = dist.pdf(qs)
     pmf = Pmf(ps, qs)
+    pmf.normalize()
+    return pmf
+
+def kde_from_sample(sample, qs, **options):
+    """Make a kernel density estimate from a sample
+    
+    sample: sequence of values
+    qs: quantities where we should evaluate the KDE
+    
+    returns: normalized Pmf
+    """
+    kde = gaussian_kde(sample)
+    ps = kde(qs)
+    pmf = Pmf(ps, qs, **options)
     pmf.normalize()
     return pmf
